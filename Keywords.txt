@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For ExampleLibrary
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+button_handler    KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+clearAll KEYWORD2
+clearButton KEYWORD2
+setButton KEYWORD2
+buttonUp KEYWORD2
+buttonDown KEYWORD2
+read KEYWORD2
+AnyButtonPressed KEYWORD2
+getButton KEYWORD2
+begin KEYWORD2
+processReading KEYWORD2
+setThresholds KEYWORD2
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+LONG_PRESS_TIME LITERAL1

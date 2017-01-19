@@ -1,0 +1,3 @@
+This is a library to handle button inputs with event triggers.  You supply an initialization table of pins assignments, and attach your own "OnButtonDown" and "OnButtonUp" callback functions to handle when buttons get pressed. Call read() in your main loop and that's all there is to it. 
+
+There is also an analog button class, as a derivation of the main button class.  It is meant for multiple buttons (with pull down resistors) on a single analog pin input (with a pull up resistor).  By reading the analog voltage and comparing it to a table of thresholds, it can determine which button was pushed.  There is a small spreadsheet in the extras folder to help create the threshold table.
