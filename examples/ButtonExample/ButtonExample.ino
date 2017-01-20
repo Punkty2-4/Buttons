@@ -92,5 +92,5 @@ void setup()
 
 void loop()
 {
-	buttons.Read();
+	buttons.read();
 }
