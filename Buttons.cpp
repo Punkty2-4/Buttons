@@ -11,16 +11,18 @@
 #define DEBUG 0
 
 
-
+// fires the events and tracks button state changes
+// returns 1 if the button event / state is changed from prior, 0 if the button state is the same
+// and -1 for error
 int Buttons::handleEvents( byte button, byte state )
 {
-	if (inp > max_buttons ||  inp < -1)
+	if (button > max_buttons ||  button < -1)
 	{
 #ifdef DEBUG
 		Serial.println (F("BAD BUTTON "));
-		Serial.println (inp);
+		Serial.println (button);
 #endif
-		return;
+		return -1;
 	}
 
 	if (state > 0)	// there is a button pressed
@@ -30,9 +32,10 @@ int Buttons::handleEvents( byte button, byte state )
 			setButton(button);
 #ifdef DEBUG
 			Serial.println (F("BUTTON DOWN"));
-			Serial.println (inp);
+			Serial.println (button);
 #endif
-			if (buttonDown) buttonDown(button);		// fire event
+			if (button_down) button_down(button);		// fire event
+			return 1;
 		}
 	}
 	else
@@ -42,21 +45,22 @@ int Buttons::handleEvents( byte button, byte state )
 				clearButton(button);
 #ifdef DEBUG
 				Serial.println (F("BUTTON UP"));
-				Serial.println (inp);
+				Serial.println (button);
 #endif
-				if (buttonUp) 
-					buttonUp(button);		// fire event
+				if (button_up) 
+					button_up(button);		// fire event
+				return 1;
 			}
 			clearButton(button);
 	}
-
+	return 0;
 }
 
 
 // -------------------------------------------------------------
 // number of reads will set the number of times to read each digital input
 // and then use the value that is > 1/2 of the reads 
-void Buttons::Read (int number_of_reads)
+void Buttons::read (int number_of_reads)
 {
 	if (pinslist==NULL) return;
 	byte a,b;
@@ -89,8 +93,9 @@ void Buttons::Read (int number_of_reads)
 // is read and averaged, which helps reduce noise
 // however, there is a risk that if the timing is *just* right, 
 // you could get a false button press that is somewhere between 
-// the first and last analog reads.
-void AnalogButtons::Read (int number_of_reads)
+// the first and last analog reads.  We trap for that by seeing if 
+// two consective reads of the analog pin are wildly different.
+void AnalogButtons::read (int number_of_reads)
 {
 	if (number_of_reads < 1) number_of_reads = 1;
 	unsigned long inp = 0;
@@ -104,7 +109,8 @@ void AnalogButtons::Read (int number_of_reads)
 		if (abs(prev_read - new_read > 20))
 		{
 			delay(50);
-			return Read(number_of_reads);		//  try to avoid major changes where we half of two states
+			read(number_of_reads);		//  try to avoid major changes where we half of two states
+			return;
 		}
 		inp += (new_read);
 	};

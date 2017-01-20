@@ -9,7 +9,6 @@
 // callback definition
 typedef  void (*button_handler )(byte id);
 
-const int LONG_PRESS_TIME = 1400; // in ms
 const int DEBOUNCE_TIME_PER_READ = 5; // IN MS
 
 // auto repeat is not well tested, use at your own risk
@@ -22,8 +21,8 @@ class Buttons
 
     protected:
         unsigned int buttons;
-        button_handler buttonDown;
-        button_handler buttonUp;
+        button_handler button_down;
+        button_handler button_up;
          const unsigned int* pinslist;
 
         byte max_buttons ;
@@ -35,9 +34,8 @@ class Buttons
         {
             buttons = 0;
             max_buttons = button_count;
-            buttonDown = NULL;
-            buttonUp = NULL;
-            button_down_time = 0;
+            button_down = NULL;
+            button_up = NULL;
             pinslist  = pins;
 		}
 
@@ -62,8 +60,8 @@ class Buttons
         
         
 		// set callbacks for button events
-        void buttonDown(button_handler val) { buttonDown = val; }
-        void buttonUp(button_handler val) { buttonUp = val; }
+        void buttonDown(button_handler val) { button_down = val; }
+        void buttonUp(button_handler val) { button_up = val; }
 		void setButton( int inp ) {  bitSet (buttons, inp);} ; 
 		
 		void clearButton( int inp ) { bitClear (buttons , inp); } 
